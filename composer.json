@@ -2,6 +2,13 @@
     "name": "velostazione/besms",
     "description": "Simple PHP client to send SMS via BeSMS API",
     "type": "library",
+    "authors": [
+        {
+            "name": "Joy Lazari",
+            "email": "joy.lazari@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
     "require": {
         "php": "^8.0",
         "guzzlehttp/guzzle": "^7.0"
