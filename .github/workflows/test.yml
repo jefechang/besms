@@ -3,7 +3,7 @@ name: Test
 on: [push]
 
 jobs:
-    build-test:
+    test:
         runs-on: ubuntu-latest
 
         steps:
@@ -13,3 +13,4 @@ jobs:
               with:
                   version: 9.5.0
                   php_version: 8.0.10
+                  configuration: phpunit.xml
