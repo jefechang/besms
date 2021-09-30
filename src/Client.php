@@ -10,8 +10,7 @@ class Client extends \GuzzleHttp\Client
     public function __construct()
     {
         parent::__construct([
-            'base_uri' => self::HOSTNAME,
-            'debug' => true
+            'base_uri' => self::HOSTNAME
         ]);
     }
 }
