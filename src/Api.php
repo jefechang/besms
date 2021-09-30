@@ -4,8 +4,8 @@ namespace Velostazione\BeSMS;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
-use Velostazione\BeSMS\Exceptions\InvalidRecipientError;
-use Velostazione\BeSMS\Exceptions\MessageNotEnqueuedError;
+use Velostazione\BeSMS\Exceptions\InvalidRecipient;
+use Velostazione\BeSMS\Exceptions\MessageNotEnqueued;
 use Velostazione\BeSMS\Exceptions\SendError;
 
 final class Api
@@ -44,9 +44,7 @@ final class Api
      */
     public function send(int|string $recipient, string $message, string $sender = null): string|false
     {
-        if (!is_numeric($phone)) {
-            return false;
-        }
+        $recipient = $this->getRecipient($recipient);
         $params = [
             'destination' => $recipient,
             'body'        => base64_encode($message),
@@ -56,7 +54,7 @@ final class Api
         }
         $response = $this->sendRequest('/send_sms', $params);
         if (preg_match('~sms queued~i', $response) < 1) {
-            throw new MessageNotEnqueuedError($response);
+            throw new MessageNotEnqueued($response);
         }
         return $response;
     }
@@ -86,5 +84,21 @@ final class Api
             throw new SendError();
         }
         return $response->getBody()->getContents();
+    }
+
+    /**
+     * Tries to validate the recipient number, dealing with country code formats
+     * @param mixed $recipient
+     *
+     * @return int
+     */
+    private function getRecipient(mixed $recipient): int
+    {
+        $cleanRecipient = preg_replace('~^(\+|00)~', '', $recipient);
+        $cleanRecipient = preg_replace('~\s|-~', '', $cleanRecipient);
+        if (preg_match('~^\d+$~', $cleanRecipient) !== 1) {
+            throw new InvalidRecipient($recipient);
+        }
+        return $cleanRecipient;
     }
 }
