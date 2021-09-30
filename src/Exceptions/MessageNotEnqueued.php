@@ -2,7 +2,7 @@
 
 namespace Velostazione\BeSMS\Exceptions;
 
-class MessageNotEnqueuedError extends \RuntimeException
+class MessageNotEnqueued extends \RuntimeException
 {
     public function __construct(string $apiResponse = '')
     {
