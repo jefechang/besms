@@ -30,7 +30,7 @@ $response = $besms->send('61491570156', 'hello world');
 print_r($response);
 ```
 
-#### Different seder
+#### Different sender
 Beside the sender defined when instantiating the class, a different sender can be specified on the fly upon sending a message:
 ```php
 $response = $besms->send('61491570156', 'hello world', <SENDER>); 
